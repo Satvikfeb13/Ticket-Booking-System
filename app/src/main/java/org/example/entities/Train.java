@@ -66,4 +66,5 @@ public class Train {
     public  void setStations(List<String>stations){
         this.stations=stations;
     }
+
 }

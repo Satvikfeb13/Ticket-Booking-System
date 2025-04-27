@@ -43,4 +43,16 @@ public class User {
     public void setTicketBooked(List<Ticket> ticketBooked) {
         this.ticketBooked = ticketBooked;
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }
