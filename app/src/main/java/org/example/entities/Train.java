@@ -1,18 +1,21 @@
 package org.example.entities;
-
-import java.sql.Time;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class Train {
     private String trainId;
     private String trainNo;
-    private Date departTime;
-    private Date arrivalTime;
-    private  List<List<Boolean>>seat;
-    private Map<String, Time>stationTimes;
+    private  List<List<Boolean>>seats;
+    private Map<String, String>stationTimes;
     private List<String>stations;
+    public Train(String trainId,String trainNo,List<List<Boolean>> seats,Map<String,String>stationTimes,List<String>stations){
+        this.trainId=trainId;
+        this.trainNo=trainNo;
+        this.seats=seats;
+        this.stationTimes=stationTimes;
+        this.stations=stations;
+    }
+    public  Train(){};
 
     public String getTrainId() {
         return trainId;
@@ -22,18 +25,11 @@ public class Train {
         return trainNo;
     }
 
-    public Date getDepartTime() {
-        return departTime;
+    public List<List<Boolean>> getSeats() {
+        return seats;
     }
 
-    public Date getArrivalTime() {
-        return arrivalTime;
-    }
-    public List<List<Boolean>> getSeat() {
-        return seat;
-    }
-
-    public Map<String, Time> getStationTimes() {
+    public Map<String, String> getStationTimes() {
         return stationTimes;
     }
 
@@ -49,22 +45,16 @@ public class Train {
         this.trainNo = trainNo;
     }
 
-    public void setArrivalTime(Date arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-    public void setDepartTime(Date departTime) {
-        this.departTime = departTime;
+    public void setSeats(List<List<Boolean>> seats) {
+        this.seats = seats;
     }
 
-    public void setSeat(List<List<Boolean>> seat) {
-        this.seat = seat;
-    }
-
-    public void setStationTimes(Map<String, Time> stationTimes) {
+    public void setStationTimes(Map<String, String> stationTimes) {
         this.stationTimes = stationTimes;
     }
     public  void setStations(List<String>stations){
         this.stations=stations;
     }
+
 
 }
