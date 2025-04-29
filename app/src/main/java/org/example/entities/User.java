@@ -14,6 +14,7 @@ public class User {
          this.hashedPassword=hashedPassword;
          this.ticketBooked=ticketBooked;
          this.userId=userId;
+
      }
      public User(){};
 
@@ -52,7 +53,7 @@ public class User {
         this.ticketBooked = ticketBooked;
     }
 
-    public  void printTockets(){
+    public  void printickets(){
         for (int i = 0; i <ticketBooked.size(); i++) {
             System.out.println(ticketBooked.get(i).getTicketInfo());
         }

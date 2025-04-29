@@ -3,13 +3,46 @@
  */
 package org.example;
 
+import org.example.entities.User;
+import org.example.services.UserBookingService;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) {
+        System.out.println("Running ticket booking system");
+        Scanner scanner = new Scanner(System.in);
+        int option=0;
+        UserBookingService userBookingService;
+        try{
+            userBookingService= new UserBookingService();
+        }catch (IOException e){
+            System.out.println("There is something wrong");
+        }
+        while(option!=7) {
+            System.out.println("Choose an option");
+            System.out.println("1. Sign up");
+            System.out.println("2. Login");
+            System.out.println("3. Fetch booking");
+            System.out.println("4. Search Trains");
+            System.out.println("5. Book a seat");
+            System.out.println("6. Cancel my Booking");
+            System.out.println("7. Exit the app");
+            option=scanner.nextInt();
+            switch (option){
+                case 1:
+                    System.out.println("Enter Username to signup");
+                    String nameToSignup= scanner.next();
+                    System.out.println("Enter password to signup");
+                    String passwordToSignup=scanner.next();
 
 
+            }
+
+        }
     }
 }
