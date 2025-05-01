@@ -5,10 +5,10 @@ import java.util.Map;
 public class Train {
     private String trainId;
     private String trainNo;
-    private  List<List<Boolean>>seats;
+    private  List<List<Integer>>seats;
     private Map<String, String>stationTimes;
     private List<String>stations;
-    public Train(String trainId,String trainNo,List<List<Boolean>> seats,Map<String,String>stationTimes,List<String>stations){
+    public Train(String trainId,String trainNo,List<List<Integer>> seats,Map<String,String>stationTimes,List<String>stations){
         this.trainId=trainId;
         this.trainNo=trainNo;
         this.seats=seats;
@@ -25,7 +25,7 @@ public class Train {
         return trainNo;
     }
 
-    public List<List<Boolean>> getSeats() {
+    public List<List<Integer>> getSeats() {
         return seats;
     }
 
@@ -45,7 +45,7 @@ public class Train {
         this.trainNo = trainNo;
     }
 
-    public void setSeats(List<List<Boolean>> seats) {
+    public void setSeats(List<List<Integer>> seats) {
         this.seats = seats;
     }
 

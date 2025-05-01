@@ -18,43 +18,64 @@ public class UserBookingService {
     private User user;
     private List<User>userList;
     private ObjectMapper objectMapper = new ObjectMapper();
-    private static final String USER_PATH = "app\\src\\main\\java\\org\\example\\localdb\\users.json";
-    public  UserBookingService(User user1) throws  IOException{
-        this.user=user1;
-        loaduser();
+    private final String USER_PATH = "app/src/main/java/org/example/localdb/users.json";
+    public UserBookingService(User user) throws IOException {
+        this.user = user;
+        this.userList = loadUsers();
     }
-    public  UserBookingService() throws IOException{
-        loaduser();
+    public UserBookingService() throws IOException {
+        this.userList = loadUsers();
     }
-    public List<User>loaduser() throws  IOException{
-        // user just load  we will add all user to userlist
-        File users = new File(USER_PATH);
-        return objectMapper.readValue(users, new TypeReference<List<User>>() {});
+
+    private List<User> loadUsers() throws IOException {
+        File usersFile = new File(USER_PATH);
+        if (!usersFile.exists()) {
+            return new ArrayList<>();
+        }
+        return objectMapper.readValue(usersFile, new TypeReference<List<User>>() {});
     }
+
     public  Boolean loginUser(){
         Optional<User>foundUser=userList.stream().filter(user1->{
             return user1.getName().equals(user.getName()) && UserServiceUtil.checkPassword(user1.getPassword(),user.getHashedPassword());
         }).findFirst();
-        return foundUser.isEmpty();
+        return foundUser.isPresent();
     }
-    public  boolean signup(User user1){
+    public  boolean signup(User user1)throws  IOException{
      try{
+         Optional<User> foundUser = userList.stream().filter(user2 ->
+                 user2.getName().equals(user1.getName()) &&
+                         UserServiceUtil.checkPassword(user2.getPassword(), user1.getHashedPassword())
+         ).findFirst();
+
+         if(foundUser.isPresent()){
+             System.out.println("Username is already taken");
+             return  false;
+         }
          userList.add(user1);
-        saveUserListToFile();
-            return  Boolean.TRUE;
-     }catch (IOException e){
-//         System.out.p;
-         return Boolean.FALSE;
+         saveUserListToFile();
+     }catch (Exception ex){
+         System.out.println("saving user list to file failed " + ex.getMessage());
+         return false;
      }
+        return true;
     }
-    private   void saveUserListToFile()throws IOException{
-        File userfile= new File(USER_PATH);
-//        cerelization
-        objectMapper.writeValue(userfile,userList);
+    public  void saveUserListToFile()throws IOException{
+       try {
+           objectMapper.writeValue(new File(USER_PATH),userList);
+       }catch (IOException e){
+           e.printStackTrace();
+       }
+
 
     }
     public  void fetchBooking(){
-        user.printickets();
+        Optional<User>userfetched= userList.stream().filter(user1 -> {
+            return user1.getName().equals(user.getName()) && UserServiceUtil.checkPassword(user1.getPassword(),user.getHashedPassword());
+        }).findFirst();
+        if(userfetched.isPresent()){
+            userfetched.get().printickets();
+        }
     }
     public  Boolean cancelBooking(String ticketId)throws IOException{
         if (ticketId == null || ticketId.isEmpty()) {
@@ -71,6 +92,7 @@ public class UserBookingService {
             return false;
         }
     }
+
     public  List<Train>getTrains(String source,String destination) throws IOException {
         try{
             TrainService trainService= new TrainService();
@@ -79,6 +101,31 @@ public class UserBookingService {
             return  new ArrayList<>();
         }
 
+    }
+    public List<List<Integer>>fetchSeats(Train train){
+        return train.getSeats();
+    }
+    public Boolean bookTrainSeat(Train train,int row, int seat){
+        try{
+            TrainService trainService= new TrainService();
+            List<List<Integer>>seats= train.getSeats();
+            if (row >= 0 && row < seats.size() && seat >= 0 && seat < seats.get(row).size()){
+                if(seats.get(row).get(seat)==0){
+                    seats.get(row).set(seat,1);
+                    train.setSeats(seats);
+                    trainService.addTrain(train);
+                    return true;
+                }else {
+                    return  false;
+                }
+            }else {
+                return false;
+            }
+
+        }catch (IOException i){
+            return Boolean.FALSE;
+
+        }
     }
 
 }
