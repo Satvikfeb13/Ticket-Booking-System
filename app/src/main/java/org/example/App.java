@@ -3,13 +3,13 @@
  */
 package org.example;
 
+import org.example.Util.UserServiceUtil;
+import org.example.entities.Train;
 import org.example.entities.User;
 import org.example.services.UserBookingService;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class App {
@@ -39,8 +39,43 @@ public class App {
                     String nameToSignup= scanner.next();
                     System.out.println("Enter password to signup");
                     String passwordToSignup=scanner.next();
-
-
+                    User usertoSignup= new User(nameToSignup,passwordToSignup,
+                            UserServiceUtil.hashPassword(passwordToSignup),
+                            new ArrayList<>(), UUID.randomUUID().toString());
+                    UserBookingService.signup(usertoSignup);
+                    break;
+                case 2:
+                    System.out.println("Enter Username to login");
+                    String nameToLogin= scanner.next();
+                    System.out.println("Enter password to login");
+                    String passwordToLogin= scanner.next();
+                    User usertoLogin= new User(nameToLogin,passwordToLogin,
+                            UserServiceUtil.hashPassword(passwordToLogin),
+                            new ArrayList<>(),UUID.randomUUID().toString());
+                    try {
+                        userBookingService=new UserBookingService(usertoLogin);
+                    }catch (IOException e){
+                        return;
+                    }
+                    break;
+                case 3:
+                    System.out.println("Fetching your bookig2");
+                    User fetch= new User();
+                    UserBookingService.fetchBooking();
+                    break;
+                case 4:
+                    System.out.println("Type your source station");
+                    String src= scanner.next();
+                    System.out.println("Type your destination station");
+                    String des=scanner.next();
+                    List<Train>trains=UserBookingService.getTrain(source,dest);
+                    int index=1;
+                    for(Train t:trains){
+                        System.out.println(index+"Train Id : "+t.getTrains());
+                        for(Map.Entry<String,String>entry:t.getStationTimes().entrySet()){
+                            System.out.println("Station: "+entry.getKey()+"Time: "+entry.getValue());
+                        }
+                    }
             }
 
         }

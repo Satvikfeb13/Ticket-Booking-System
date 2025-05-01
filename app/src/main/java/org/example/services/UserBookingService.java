@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Util.UserServiceUtil;
 import org.example.entities.Ticket;
+import org.example.entities.Train;
 import org.example.entities.User;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -62,12 +64,21 @@ public class UserBookingService {
         boolean isRemoved =  user.getTicketBooked().removeIf(ticket -> ticket.getTicketId().equals(ticketId) );
         if(isRemoved) {
             saveUserListToFile();
-            System.out.println("Ticket with ID " + ticketId + " has been canceled.");
+            System.out.println("Ti+cket with ID " + ticketId + " has been canceled.");
             return true;
         }else{
             System.out.println("No ticket found with ID " + ticketId);
             return false;
         }
+    }
+    public  List<Train>getTrains(String source,String destination) throws IOException {
+        try{
+            TrainService trainService= new TrainService();
+            return trainService.searchTrains(source,destination);
+        }catch (IOException ex){
+            return  new ArrayList<>();
+        }
+
     }
 
 }
